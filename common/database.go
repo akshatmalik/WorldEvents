@@ -1,10 +1,10 @@
 package common
 
 import (
-	"database/sql"
 	"fmt"
 
-	_ "github.com/lib/pq"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 const (
@@ -15,24 +15,24 @@ const (
 	dbname   = "world_events"
 )
 
-var DB sql.DB
+var DB gorm.DB
 
-func ConnectDB() {
+func InitDB() error {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
-	db, err := sql.Open("postgres", psqlInfo)
+	DB, err := gorm.Open("postgres", psqlInfo)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	defer db.Close()
+	defer DB.Close()
 
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
+	// TODO: Auto migrate all the things
+	// DB.AutoMigrate()
 
 	fmt.Println("Successfully connected!")
+
+	return nil
 }

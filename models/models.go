@@ -3,22 +3,21 @@ package models
 import (
 	"time"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/lib/pq"
 )
 
 type BaseEvent struct {
-	ID        uint `gorm: "primary_key"`
+	ID        uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt time.Time
-	Tit
+	Title     string
 }
 
 type TextEvent struct {
-	gorm.BaseEvent
 	BaseEvent
+	TextDescription string
 }
 
 type Event interface {
