@@ -17,13 +17,15 @@ const (
 
 var DB gorm.DB
 
+var gormOpen = gorm.Open
+
 func InitDB() error {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
-	DB, err := gorm.Open("postgres", psqlInfo)
+	DB, err := gormOpen("postgres", psqlInfo)
 	if err != nil {
 		return err
 	}
